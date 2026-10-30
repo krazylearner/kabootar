@@ -2,8 +2,6 @@
 
 A channel-agnostic escrow platform: a community and listing surface plus custodial USDT escrow with manual INR settlement, run by a single operator. Each messaging surface is a channel with its own adapter; the escrow core is shared.
 
-Full specification: [`docs/re/00-index.md`](./docs/re/00-index.md) · Decisions: [`docs/adr/`](./docs/adr/)
-
 ## Language
 
 ### Channels

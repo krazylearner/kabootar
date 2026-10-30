@@ -1,0 +1,86 @@
+site_name: Kabootar
+site_description: Channel-agnostic escrow platform — design specification (frozen v1)
+site_url: https://krazylearner.github.io/kabootar/
+repo_url: https://github.com/krazylearner/kabootar
+repo_name: krazylearner/kabootar
+edit_uri: edit/main/docs/
+copyright: Apache-2.0 · spec v1
+
+docs_dir: docs
+
+exclude_docs: |
+  agents/
+  re/00-index.md
+
+theme:
+  name: material
+  language: en
+  icon:
+    repo: fontawesome/brands/github
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - toc.follow
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Specification:
+      - 01 Source analysis: re/01-source-analysis.md
+      - 02 Architecture: re/02-architecture.md
+      - 03 Domain model: re/03-domain-model.md
+      - 04 Deal protocol: re/04-deal-protocol.md
+      - 05 Adapters: re/05-adapters.md
+      - 06 Community and listings: re/06-community-and-listings.md
+      - 07 Custody and payments: re/07-custody-and-payments.md
+      - 08 Operator and wizard: re/08-operator-and-wizard.md
+      - 09 Security and limitations: re/09-security-and-limitations.md
+      - 10 Deployment and ops: re/10-deployment-and-ops.md
+  - Decision records:
+      - 0001 Channel-agnostic core: adr/0001-channel-agnostic-core-adapter-ports.md
+      - 0002 Web is a channel adapter: adr/0002-web-is-a-channel-adapter.md
+      - 0003 Per-channel identity: adr/0003-per-channel-identity.md
+      - 0004 Single hot-wallet custody: adr/0004-single-hot-wallet-custody.md
+      - 0005 Static deposit-address pool: adr/0005-static-deposit-address-pool.md
+      - 0006 No KYC, open registration: adr/0006-no-kyc-open-registration.md
+      - 0007 Operator-final disputes: adr/0007-operator-final-disputes.md
+      - 0008 RabbitMQ transactional outbox: adr/0008-rabbitmq-transactional-outbox.md
+  - Glossary: glossary.md
