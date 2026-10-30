@@ -1,0 +1,79 @@
+name: spec-lint
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: spec-lint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  prose:
+    name: prose
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: markdownlint
+        run: npx --yes markdownlint-cli2
+
+  schemas:
+    name: schemas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Compile every JSON Schema
+        run: |
+          set -euo pipefail
+          npm install --global ajv-cli@5 ajv-formats@3
+          for schema in schemas/*.json; do
+            refs=()
+            for other in schemas/*.json; do
+              [ "$other" = "$schema" ] || refs+=(-r "$other")
+            done
+            ajv compile --spec=draft2020 -c ajv-formats -s "$schema" "${refs[@]}"
+          done
+
+  diagrams:
+    name: diagrams
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Mermaid CLI
+        run: npm install --global @mermaid-js/mermaid-cli@11
+      - name: Parse every Mermaid block
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/diagrams"
+          while IFS= read -r doc; do
+            out="$RUNNER_TEMP/diagrams/$(echo "$doc" | tr '/' '_').md"
+            mmdc -i "$doc" -o "$out" -p .github/mermaid-puppeteer.json -q
+          done < <(grep -rl '```mermaid' docs --include='*.md')
+
+  links:
+    name: links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --offline --no-progress --include-fragments
+            --exclude-path .agents
+            --exclude-path "New folder"
+            "./**/*.md"
+          fail: true

@@ -34,6 +34,7 @@ with replacement before parsing. Emoji are lost in `.txt`, recoverable from `.ht
 - **General** — announcements, support, gripes. Includes "I got scammed" safety posts
   and suspension notices (e.g. "withdrawals suspended, resume within 48hrs").
 - **OTC** — free-form listings and calls:
+
   ```
   #selling
   Chain : BEP20
@@ -42,6 +43,7 @@ with replacement before parsing. Emoji are lost in `.txt`, recoverable from `.ht
   Rate[INR/USDT]: 102.6
   Payment Method: cdm
   ```
+
   Common methods: **CDM**, **CCW**, **UPI**, **IMPS**, **QR cash**. Rates cluster around
   100–105 INR/USDT. `Escrow urs` / `Escrow mine` states who pays the fee.
 - **Guidelines** — the pinned operating manual (quoted below).

@@ -88,28 +88,33 @@ implemented.
 ## 7. Runbook
 
 ### Pause everything
+
 ```bash
 # set settings.paused = true via operator console or SQL
 UPDATE settings SET value='true' WHERE key='paused';
 ```
 
 ### Rotate the Telegram token
+
 1. Revoke in BotFather, issue a new token.
 2. Update the secret, restart `app`.
 3. Verify `getMe` and a synthetic update.
 
 ### Rotate the signer key
+
 1. Move balances to the new wallet (manual, out of band).
 2. Import new pool addresses.
 3. Retire old addresses after cooldown.
 4. Update `SIGNER_KEY_REF`; restart `worker`.
 
 ### Add pool addresses
+
 1. Generate offline with the custody key.
 2. Validate checksums and chain.
 3. Import via operator console; publish the updated list.
 
 ### Recover a lost operator
+
 1. Use recovery codes at `/operator/recover`.
 2. If lost, restore the operator row from backup and re-enroll TOTP.
 
