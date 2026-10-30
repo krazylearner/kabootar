@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kabootar.dev/schemas/adapter-config.schema.json",
+  "title": "Adapter Configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["adapter", "enabled", "surface"],
+  "properties": {
+    "adapter": { "type": "string", "enum": ["telegram", "web", "discord", "slack"] },
+    "enabled": { "type": "boolean" },
+    "surface": { "type": "string", "enum": ["native_room", "web_surface", "notify_only"] },
+    "verification": { "type": "string", "enum": ["none", "optional", "required"] },
+    "community": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "chat_id": { "type": ["string", "null"] },
+        "listings_topic": { "type": ["integer", "null"] }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "buttons": { "type": "boolean" },
+        "ephemeral": { "type": "boolean" },
+        "threads": { "type": "boolean" },
+        "native_rooms": { "type": "boolean" },
+        "file_upload": { "type": "boolean" },
+        "file_download": { "type": "boolean" },
+        "member_list": { "type": "boolean" },
+        "moderation": { "type": "boolean" },
+        "message_edit": { "type": "boolean" },
+        "max_message_bytes": { "type": "integer", "minimum": 256 }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_open_deals_per_account": { "type": "integer", "minimum": 1 },
+        "max_open_listings_per_account": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "oidc": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "issuer": { "type": "string", "format": "uri" },
+        "client_id": { "type": "string" },
+        "scopes": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

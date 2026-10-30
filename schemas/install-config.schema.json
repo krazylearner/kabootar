@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kabootar.dev/schemas/install-config.schema.json",
+  "title": "First-Run Install Configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["brand", "operator", "adapters", "chains", "fees", "timers", "limits"],
+  "properties": {
+    "brand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "support_handle": { "type": "string", "maxLength": 64 },
+        "logo_url": { "type": ["string", "null"], "format": "uri" }
+      }
+    },
+    "operator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["username"],
+      "properties": {
+        "username": { "type": "string", "minLength": 3, "maxLength": 64 }
+      }
+    },
+    "adapters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "telegram": { "$ref": "adapter-config.schema.json" },
+        "web": { "$ref": "adapter-config.schema.json" },
+        "discord": { "$ref": "adapter-config.schema.json" },
+        "slack": { "$ref": "adapter-config.schema.json" }
+      }
+    },
+    "chains": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bsc", "tron"],
+      "properties": {
+        "bsc": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["confirmations", "pool_size"],
+          "properties": {
+            "rpc_url": { "type": "string", "format": "uri" },
+            "usdt_contract": { "type": "string" },
+            "confirmations": { "type": "integer", "minimum": 1, "maximum": 50 },
+            "pool_size": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "tron": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["confirmations", "pool_size"],
+          "properties": {
+            "rpc_url": { "type": "string", "format": "uri" },
+            "usdt_contract": { "type": "string" },
+            "confirmations": { "type": "integer", "minimum": 1, "maximum": 50 },
+            "pool_size": { "type": "integer", "minimum": 1 }
+          }
+        }
+      }
+    },
+    "fees": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pct", "min_atomic"],
+      "properties": {
+        "pct": { "type": "number", "minimum": 0, "maximum": 0.05 },
+        "min_atomic": { "type": "integer", "minimum": 0 },
+        "payer": { "type": "string", "enum": ["buyer", "seller", "split"] }
+      }
+    },
+    "timers": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "form_min": { "type": "integer", "minimum": 1 },
+        "deposit_min": { "type": "integer", "minimum": 1 },
+        "inr_min": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_open_deals": { "type": "integer", "minimum": 1 },
+        "max_open_listings": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

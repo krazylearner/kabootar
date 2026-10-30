@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kabootar.dev/schemas/deposit-address.schema.json",
+  "title": "Deposit Address",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "chain", "address", "status"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "chain": { "type": "string", "enum": ["bsc", "tron"] },
+    "address": { "type": "string", "minLength": 20, "maxLength": 128 },
+    "status": {
+      "type": "string",
+      "enum": ["free", "assigned", "cooldown", "retired"]
+    },
+    "assigned_deal_id": { "type": ["string", "null"], "format": "uuid" },
+    "assigned_at": { "type": ["string", "null"], "format": "date-time" },
+    "released_at": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "assigned" } }, "required": ["status"] },
+      "then": { "required": ["assigned_deal_id", "assigned_at"] }
+    }
+  ]
+}

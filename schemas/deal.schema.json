@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kabootar.dev/schemas/deal.schema.json",
+  "title": "Deal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "public_id", "adapter", "room_ref", "buyer_account_id",
+    "seller_account_id", "chain", "asset", "decimals", "amount_atomic",
+    "amount_inr_atomic", "fee_atomic", "state", "version", "created_at"
+  ],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "public_id": { "type": "string", "pattern": "^D[0-9]{5,}$" },
+    "adapter": { "type": "string", "enum": ["telegram", "web", "discord", "slack"] },
+    "room_ref": { "type": "object" },
+    "buyer_account_id": { "type": "string", "format": "uuid" },
+    "seller_account_id": { "type": "string", "format": "uuid" },
+    "listing_id": { "type": ["string", "null"], "format": "uuid" },
+    "chain": { "type": "string", "enum": ["bsc", "tron"] },
+    "asset": { "type": "string", "const": "USDT" },
+    "decimals": { "type": "integer", "const": 6 },
+    "amount_atomic": { "type": "integer", "minimum": 1 },
+    "amount_inr_atomic": { "type": "integer", "minimum": 1 },
+    "fee_atomic": { "type": "integer", "minimum": 0 },
+    "fee_pct": { "type": "number", "minimum": 0, "maximum": 0.05 },
+    "fee_min_atomic": { "type": "integer", "minimum": 0 },
+    "payment_methods": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["cdm", "ccw", "upi", "imps", "qr_cash"] }
+    },
+    "payment_details": { "type": ["string", "null"], "maxLength": 1024 },
+    "release_address": { "type": "string", "minLength": 20, "maxLength": 128 },
+    "refund_address": { "type": ["string", "null"], "maxLength": 128 },
+    "state": {
+      "type": "string",
+      "enum": [
+        "INITIATED", "ROOM_READY", "PARTICIPANTS_JOINED", "VERIFIED",
+        "AWAITING_FORM", "AWAITING_DETAILS", "AWAITING_CONFIRMATION",
+        "ADDRESS_ASSIGNED", "AWAITING_DEPOSIT", "DEPOSIT_DETECTED", "CONFIRMING",
+        "FUNDED", "INR_SUBMITTED", "AWAITING_RELEASE", "RELEASING",
+        "COMPLETED", "CANCELLED", "EXPIRED", "DISPUTED", "REFUNDED"
+      ]
+    },
+    "version": { "type": "integer", "minimum": 0 },
+    "deposit_address_id": { "type": ["string", "null"], "format": "uuid" },
+    "confirmations_required": { "type": "integer", "minimum": 1, "maximum": 50 },
+    "deadline_at": { "type": ["string", "null"], "format": "date-time" },
+    "frozen_terms_hash": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" },
+    "dispute_id": { "type": ["string", "null"], "format": "uuid" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "state": { "const": "COMPLETED" } }, "required": ["state"] },
+      "then": { "required": ["frozen_terms_hash", "deposit_address_id"] }
+    }
+  ]
+}

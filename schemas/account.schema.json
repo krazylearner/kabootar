@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kabootar.dev/schemas/account.schema.json",
+  "title": "Account",
+  "description": "A per-channel identity. Accounts are never linked across adapters.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "adapter", "external_id", "verification_state", "created_at"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "adapter": { "type": "string", "enum": ["telegram", "web", "discord", "slack"] },
+    "external_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "display_name": { "type": "string", "maxLength": 128 },
+    "handle": { "type": ["string", "null"], "maxLength": 64 },
+    "verification_state": { "type": "string", "enum": ["none", "pending", "verified"] },
+    "verification_ref": { "type": ["string", "null"], "maxLength": 256 },
+    "created_at": { "type": "string", "format": "date-time" }
+  }
+}

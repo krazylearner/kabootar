@@ -1,0 +1,10 @@
+# Raw reverse-engineering sources (Telegram exports, contain member data)
+New folder/
+
+# Local tooling
+node_modules/
+.env
+.env.*
+*.log
+.DS_Store
+Thumbs.db

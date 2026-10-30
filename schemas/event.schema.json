@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kabootar.dev/schemas/event.schema.json",
+  "title": "Domain Event Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_id", "type", "version", "occurred_at", "aggregate_id", "adapter", "payload"],
+  "properties": {
+    "event_id": { "type": "string", "format": "uuid" },
+    "type": {
+      "type": "string",
+      "enum": [
+        "account.created", "account.verified",
+        "listing.created", "listing.published", "listing.closed",
+        "deal.created", "deal.room_ready", "deal.participant_joined",
+        "deal.form_submitted", "deal.details_submitted", "deal.summary_posted",
+        "deal.confirmed", "deal.address_assigned", "deal.deposit_detected",
+        "deal.deposit_confirmed", "deal.inr_submitted", "deal.release_requested",
+        "deal.released", "deal.completed", "deal.cancelled", "deal.expired",
+        "deal.disputed", "dispute.evidence_added", "dispute.resolved",
+        "reputation.updated", "vouch.created"
+      ]
+    },
+    "version": { "type": "integer", "const": 1 },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "aggregate_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "adapter": {
+      "type": ["string", "null"],
+      "enum": ["telegram", "web", "discord", "slack", null]
+    },
+    "correlation_id": { "type": ["string", "null"], "format": "uuid" },
+    "causation_id": { "type": ["string", "null"], "format": "uuid" },
+    "payload": { "type": "object" }
+  }
+}

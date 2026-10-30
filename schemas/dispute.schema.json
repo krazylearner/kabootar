@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kabootar.dev/schemas/dispute.schema.json",
+  "title": "Dispute",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "deal_id", "opened_by_account_id", "reason", "state", "opened_at"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "deal_id": { "type": "string", "format": "uuid" },
+    "opened_by_account_id": { "type": "string", "format": "uuid" },
+    "reason": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "state": { "type": "string", "enum": ["open", "resolved", "withdrawn"] },
+    "verdict": { "type": ["string", "null"], "enum": ["release", "refund", "split", null] },
+    "split_buyer_pct": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "resolved_by": { "type": ["string", "null"], "maxLength": 128 },
+    "resolved_at": { "type": ["string", "null"], "format": "date-time" },
+    "note": { "type": ["string", "null"], "maxLength": 4000 },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "ref", "added_by", "added_at"],
+        "properties": {
+          "kind": { "type": "string", "enum": ["file", "text", "tx", "message"] },
+          "ref": { "type": "string", "maxLength": 2048 },
+          "hash": { "type": ["string", "null"], "maxLength": 128 },
+          "added_by": { "type": "string", "format": "uuid" },
+          "added_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "opened_at": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "state": { "const": "resolved" } }, "required": ["state"] },
+      "then": { "required": ["verdict", "resolved_by", "resolved_at"] }
+    }
+  ]
+}
