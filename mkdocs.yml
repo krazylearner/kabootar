@@ -61,6 +61,10 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
 
+extra_javascript:
+  - path: javascripts/mermaid.mjs
+    type: module
+
 nav:
   - Home: index.md
   - Specification:
