@@ -4,7 +4,7 @@ A channel-agnostic escrow platform: a community and listing surface plus custodi
 
 This repository is **specification only** — no implementation. It holds the reverse-engineering of a live Telegram escrow community and the target design derived from it, frozen at v1.
 
-**Read the spec:** https://krazylearner.github.io/kabootar/
+**Read the spec:** [krazylearner.github.io/kabootar](https://krazylearner.github.io/kabootar/)
 
 ## Layout
 
